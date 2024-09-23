@@ -2,7 +2,7 @@
 #define MAX 50
 
 int queue[MAX], front = -1, rear = -1;
-
+// function prototypes
 void enqueue(int[MAX], int);
 int dequeue(int[MAX]);
 int isFull(int[MAX]);
@@ -11,7 +11,7 @@ int isEmpty(int[MAX]);
 
 int main()
 {
-    int choice, value;
+    int choice, value, deleted_value;
     do
     {
         printf("1. Insert an element\n");
@@ -31,10 +31,8 @@ int main()
         case 2:
             printf("Enter the element you want to delete: ");
             scanf("%d", &value);
-            value = dequeue(queue);
-            if (value == -1)
-                printf("There are no elements to delete");
-            printf("Deleted %d", value);
+            deleted_value = dequeue(queue);
+            printf("Deleted %d\n", deleted_value);
             break;
         case 3:
             display(queue);
@@ -74,13 +72,13 @@ int dequeue(int queue[MAX])
         front = rear = -1;
         return -1;
     }
-    item = queue[front];
     if (front == rear)
     {
         front = rear = -1;
     }
     else
     {
+        item = queue[front];
         front++;
     }
     return item;
@@ -122,7 +120,7 @@ void display(int queue[MAX])
         printf("The queue elements are: \n");
         for (i = front; i <= rear; i++)
         {
-            printf("%d\t\n", queue[i]);
+            printf("%d\n", queue[i]);
         }
     }
 }
