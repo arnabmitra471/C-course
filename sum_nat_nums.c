@@ -1,12 +1,17 @@
 #include <stdio.h>
 
 int main(){
-    int i = 11;
+    int n,sum = 0,i;
+    printf("Enter the number of terms: ");
+    scanf("%d",&n);
+    i = n;
+    do
+    {
+        sum += i;
+        i--;
+    }while(i >= 1);
 
-    do{
-        printf("The value of i is %d\n",i);
-        i++;
-    }while(i <= 10);
+    printf("The sum of %d terms is %d",n,sum);
     
     return 0;
 }
