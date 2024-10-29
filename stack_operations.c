@@ -12,6 +12,7 @@ int main()
     int choice, val;
     do
     {
+        printf("\n ***** MAIN MENU *****");
         printf("\n 1. PUSH");
         printf("\n 2. POP");
         printf("\n 3. PEEK");
