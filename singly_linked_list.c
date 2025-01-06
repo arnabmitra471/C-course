@@ -13,10 +13,14 @@ struct node *create_ll(struct node *);
 struct node *display(struct node *);
 struct node *insert_beg(struct node *);
 struct node *insert_end(struct node *);
+struct node *insert_before(struct node *);
+struct node *insert_after(struct node *);
 struct node *delete_beg(struct node *);
 struct node *delete_end(struct node *);
+struct node *delete_after(struct node *);
+void count_nodes(struct node *);
 
-int main()
+int main(int argc, char *argv[])
 {
     int option;
     do
@@ -52,14 +56,26 @@ int main()
             break;
 
         case 5:
-            start = delete_beg(start);
+            start = insert_before(start);
             break;
 
         case 6:
+            start = insert_after(start);
+            break;
+        case 7:
+            start = delete_beg(start);
+            break;
+        case 8:
             start = delete_end(start);
             break;
+        case 9:
+            start = delete_after(start);
+            break;
+        case 10:
+            count_nodes(start);
+            break;
         }
-    } while (option != 7);
+    } while (option != 11);
     return 0;
 }
 
@@ -145,48 +161,107 @@ struct node *insert_end(struct node *start)
     ptr->next = new_node;
     return start;
 }
+struct node *insert_before(struct node *start)
+{
+    struct node *ptr, *pretr, *new_node;
+    int num, val;
+    printf("\n Enter the data: ");
+    scanf("%d", &num);
+    printf("\n Enter the value before which the data has to be inserted: ");
+    scanf("%d", &val);
+    new_node = (struct node *)malloc(sizeof(struct node));
+    new_node->data = num;
+    ptr = start;
+    while (ptr->data != val)
+    {
+        pretr = ptr;
+        ptr = ptr->next;
+    }
+    pretr->next = new_node;
+    new_node->next = ptr;
+
+    return start;
+}
+struct node *insert_after(struct node *start)
+{
+    struct node *new_node, *ptr, *preptr;
+    int num, val;
+    printf("\n Enter the data: ");
+    scanf("%d", &num);
+    printf("Enter the value after which the data has to be inserted: ");
+    scanf("%d", &val);
+    new_node = (struct node *)malloc(sizeof(struct node));
+    new_node->data = val;
+    ptr = start;
+    preptr = ptr;
+    while (preptr->data != val)
+    {
+        preptr = ptr;
+        ptr = ptr->next;
+    }
+    preptr->next = new_node;
+    new_node->next = ptr;
+    return start;
+}
 struct node *delete_beg(struct node *start)
 {
     struct node *ptr;
-    if (start == NULL)
-    {
-        printf("\nThe linked list is empty");
-        return start;
-    }
-    else
-    {
-        ptr = start; // initially ptr points to the first node i.e(the node being pointed by start)
-        start = start->next;
-        printf("\n The node being deleted is %d\n", ptr->data);
-        free(ptr);
-        return start;
-    }
+    ptr = start; // initially ptr points to the first node i.e(the node being pointed by start)
+    start = start->next;
+    free(ptr);
+    return start;
 }
 struct node *delete_end(struct node *start)
 {
     struct node *ptr, *preptr;
+
     if (start == NULL)
     {
-        printf("\n The linked list is empty");
-        return start;
+        printf("The linked list is empty");
     }
-    else if (start->next == NULL)
+    else if(start ->next == NULL)
     {
         free(start);
-        start = NULL; // set start = NULL as the list will be empty after deletion
+        start = NULL;
     }
     else
     {
         ptr = start;
-        preptr = ptr;
         while (ptr->next != NULL)
         {
             preptr = ptr;
             ptr = ptr->next;
         }
         preptr->next = NULL;
-        printf("The node being deleted is %d\n", ptr->data);
         free(ptr); // free the last node
     }
+    return start;
+}
+void count_nodes(struct node *start)
+{
+    struct node *ptr = start;
+    int count = 0;
+    while (ptr != NULL)
+    {
+        count += 1;
+        ptr = ptr->next;
+    }
+    printf("The number of nodes in the linked list is %d", count);
+}
+struct node *delete_after(struct node *start)
+{
+    struct node *ptr, *preptr;
+    int val;
+    printf("\n Enter the value after which the node has to be deleted: ");
+    scanf("%d", &val);
+    ptr = start;
+    preptr = ptr;
+    while (preptr->data != val)
+    {
+        preptr = ptr;
+        ptr = ptr->next;
+    }
+    preptr->next = ptr->next;
+    free(ptr);
     return start;
 }
